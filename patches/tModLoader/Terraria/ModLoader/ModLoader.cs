@@ -98,6 +98,8 @@ public static class ModLoader
 		MonoModHooks.Initialize();
 		FNAFixes.Init();
 		LoaderManager.AutoLoad();
+		if (OperatingSystem.IsWindows())
+			AudioDeviceMonitor.Initialize();
 	}
 
 	internal static void PrepareAssets()
