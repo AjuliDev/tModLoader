@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/tModLoader/Terraria/Audio/LegacyAudioSystem.cs
-@@ -2,8 +_,11 @@
+@@ -2,8 +_,12 @@
  using System.Collections;
  using System.Collections.Generic;
  using System.IO;
@@ -8,6 +8,7 @@
  using Microsoft.Xna.Framework.Audio;
  using ReLogic.Content.Sources;
 +using Terraria.ID;
++using Terraria.ModLoader;
 +using Terraria.ModLoader.Engine;
  
  namespace Terraria.Audio;
@@ -95,3 +96,18 @@
  			}
  		}
  		else {
+@@ -281,7 +_,13 @@
+ 
+ 	public void UpdateAudioEngine()
+ 	{
++		try {
+-		Engine.Update();
++			Engine.Update();
++		}
++		catch (Exception e) {
++			Logging.tML.Warn("AudioDeviceMonitor: FAudio error caught, scheduling reinit: " + e.Message);
++			AudioDeviceMonitor.SignalDeviceChange();
++		}
+ 	}
+ 
+ 	public void Dispose()

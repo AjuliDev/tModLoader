@@ -13,7 +13,7 @@ internal static class AudioDeviceMonitor
 	private static volatile bool _deviceChangePending;
 	private static NotificationClient _client;
 	private static IMMDeviceEnumerator _enumerator;
-
+	public static void SignalDeviceChange() => _deviceChangePending = true;
 	public static void Initialize()
 	{
 		if (!OperatingSystem.IsWindows())
@@ -103,14 +103,13 @@ internal static class AudioDeviceMonitor
 	}
 
 	[ComImport, Guid("A95664D2-9614-4F35-A746-DE8DB63617E6"),
-	 InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+ InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
 	interface IMMDeviceEnumerator
 	{
-		void NotImpl1();
-		void NotImpl2();
-		void NotImpl3();
-		void NotImpl4();
-		void NotImpl5();
+		void EnumAudioEndpoints(int dataFlow, int stateMask, out IntPtr devices);
+		void GetDefaultAudioEndpoint(int dataFlow, int role, out IntPtr endpoint);
+		void GetDevice([MarshalAs(UnmanagedType.LPWStr)] string id, out IntPtr device);
 		void RegisterEndpointNotificationCallback(IMMNotificationClient client);
+		void UnregisterEndpointNotificationCallback(IMMNotificationClient client);
 	}
 }
